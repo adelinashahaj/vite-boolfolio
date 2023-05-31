@@ -2,30 +2,44 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-4" v-for="project in projects">
+            <div class="col-3" v-for="project in projects" >
                 <AppProjectCard     
                 :propProject="project"
-                :propUrl="this.baseUrl"          
+                         
                 ></AppProjectCard>
             </div>
         </div>
-        <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item"><button class="page-link" @click="getProjects(currentPage - 1)" :class="{'disabled' : currentPage == 1}">Previous</button></li>
-                    <li class="page-item"><button class="page-link" @click="getProjects(currentPage + 1)" :class="{'disabled' : currentPage == lastPage}">Next</button></li>
+                    <li class="page-item">
+                        <button class="page-link" @click="getProjects(currentPage - 1)" :class="{'disabled' : currentPage == 1}">Previous</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" @click="getProjects(1)" >1</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link"  @click="getProjects(2)" >2</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link"  @click="getProjects(3)" >3</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" @click="getProjects(currentPage )" :class="{'disabled' : currentPage == lastPage}">Next</button>
+                    </li>
                 </ul>
             </nav>
     </div>
-
+    
 </template>
 
 <script>
 
 import axios from 'axios';
-import AppProjectCard from './AppProjectCard.vue';
+import AppProjectCard from '../components/AppProjectCard.vue';
+import { store } from '../store.js';
 
 export default {
-        name: "AppMain",
+        name: "ProjectList",
 
         components: {
            AppProjectCard,
@@ -34,7 +48,7 @@ export default {
         data(){
             return {
               projects: [],
-              contentMaxLength: 100,
+              store,
               baseUrl: 'http://localhost:8000',
               currentPage: 1,
               lastPage: null,
@@ -42,7 +56,6 @@ export default {
         },
         methods: {
             getProjects(gotoPage) {
-                console.log('ciao mondo');
 
                 axios.get(`${this.baseUrl}/api/projects`, 
                 {
@@ -59,7 +72,7 @@ export default {
                 });
 
             },
-            
+           
         },
         mounted() {
             this.getProjects(1);
