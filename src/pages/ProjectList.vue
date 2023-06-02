@@ -2,13 +2,13 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-3" v-for="project in projects" >
+            <div v-if="loading == false" class="col-3" v-for="project in projects" >
                 <AppProjectCard     
-                :propProject="project"
-                         
-                ></AppProjectCard>
+                :propProject="project"></AppProjectCard>
             </div>
-        </div>
+            <div v-else>
+              <img src="/img-loading1.png" alt="Caricamento in corso...">
+            </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
@@ -24,10 +24,11 @@
                         <button class="page-link"  @click="getProjects(3)" >3</button>
                     </li>
                     <li class="page-item">
-                        <button class="page-link" @click="getProjects(currentPage )" :class="{'disabled' : currentPage == lastPage}">Next</button>
+                        <button class="page-link" @click="getProjects(currentPage + 1 )" :class="{'disabled' : currentPage == lastPage}">Next</button>
                     </li>
                 </ul>
             </nav>
+        </div> 
     </div>
     
 </template>
@@ -52,11 +53,12 @@ export default {
               baseUrl: 'http://localhost:8000',
               currentPage: 1,
               lastPage: null,
+              loading: true
             }
         },
         methods: {
             getProjects(gotoPage) {
-
+                this.loading = true;
                 axios.get(`${this.baseUrl}/api/projects`, 
                 {
                     params: {
@@ -69,6 +71,7 @@ export default {
                     this.projects = response.data.results.data;
                     this.currentPage = response.data.results.current_page;
                     this.lastPage = response.data.results.last_page;
+                    this.loading = false;
                 });
 
             },

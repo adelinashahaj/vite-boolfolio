@@ -7,14 +7,15 @@
                         <p class="card-text">Descrizione: <br>
                             {{ truncateText(this.propProject.description) }}
                         </p>
+                        <p class="card-text">Tecnologia : <br>
+                            <span v-for="technology in this.propProject.technologies">
+                                <span class="badge rounded-pill text-bg-primary">{{technology.name }}</span>
+                            </span>
+                        </p>
                         <p class="card-text">Tipologia: <br>
                             {{this.propProject.type?.name}}
                         </p>
-                        <p class="card-text">Tecnologia : <br>
-                            <span v-for="technology in this.propProject.technologies">
-                                {{ technology.name }},
-                            </span>
-                        </p>
+                        
                        
                         <router-link :to="{name: 'single-project', params: {slug: this.propProject.slug}}" class="btn btn-primary">
                             Vedi project completo
