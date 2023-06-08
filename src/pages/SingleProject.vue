@@ -45,8 +45,10 @@
              
             }
         },
-        mounted() {
-        const slug = this.$route.params.slug; 
+       methods: {
+        getProject() {
+     
+            const slug = this.$route.params.slug; 
         console.log(slug);
 
         axios.get(`${this.store.baseUrl}/api/project/${slug}`)
@@ -60,6 +62,19 @@
                 }
                
             });
+        }
+
+       },
+        created() {
+            this.$watch(
+            () => this.$route.params,
+            (toParams, previousParams) => {
+                this.getProject();
+            }
+            )
+        },
+        mounted() {
+            this.getProject();
         }
     }
 
